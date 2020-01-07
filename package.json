@@ -1,0 +1,22 @@
+{
+  "name": "theya-bot",
+  "version": "1.0.0",
+  "description": "An irc bot for osu! that send good unranked maps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "theya-bot"
+  },
+  "author": "Theya",
+  "license": "MIT",
+  "dependencies": {
+    "bancho.js": "^0.9.6",
+    "chai": "^4.2.0",
+    "fs": "0.0.1-security",
+    "mocha": "^7.0.0",
+    "node-osu": "^2.0.0"
+  }
+}
