@@ -68,13 +68,13 @@ const startOsuBot = async () => {
       }
       let defaultMode = mode[message.user.ircUsername].mode
 
-      let lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
+      /*let lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
       if (!lastMap[message.user.ircUsername]) {
         lastMap[message.user.ircUsername] = {
           lastMap: " "
         }
       }
-      let userLastMap = lastMap[message.user.ircUsername].lastMap
+      let userLastMap = lastMap[message.user.ircUsername].lastMap*/
       fs.readFile('./users.txt', 'utf8', (err, usersList) => {
         if (err) throw err
         var lignes = usersList.split(/\r\n|\r|\n/)
@@ -155,7 +155,7 @@ const startOsuBot = async () => {
       }
       if (commandfile) { 
         rateLimiter++
-        commandfile.run(message, cooldown, mode, userLastMap, cooldownr, lastMap, rateLimiter, defaultMode, request)
+        commandfile.run(message, cooldown, mode, /*userLastMap,*/ cooldownr, /*lastMap,*/ rateLimiter, defaultMode, request)
       }
         switch (message.message) {
         case prefix + "cc":

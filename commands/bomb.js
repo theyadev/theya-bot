@@ -7,7 +7,7 @@ var osuApi = new osu.Api(apiKey, {
     completeScores: false
 })
 
-module.exports.run = async (message, cooldown, lastMap, rateLimiter) => {
+module.exports.run = async (message, cooldown,) => {
     let mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
     if (!mode[message.user.ircUsername]) {
         mode[message.user.ircUsername] = {
@@ -28,18 +28,9 @@ module.exports.run = async (message, cooldown, lastMap, rateLimiter) => {
                     var Array = file.match(/.{1,7}/g)
                     var randomItem = Array[Math.round(Math.random() * Array.length)]
                     var maps = randomItem - 1
-                    console.log(randomItem)
-
-                    lastMap[message.user.ircUsername] = {
-                        lastMap: randomItem
-                    }
-                    fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
-                        if (err) throw err
-                    })
-                    let userLastMap = lastMap[message.user.ircUsername].lastMap
+                    console.log('Map Envoyé.')
 
                     osuApi.getBeatmaps({ b: `${randomItem}` }).then(beatmaps => {
-                        rateLimiter++
                         message.user.sendMessage(`[https://osu.ppy.sh/b/${randomItem} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.genre(maps)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
                     })
                 })
@@ -58,14 +49,6 @@ module.exports.run = async (message, cooldown, lastMap, rateLimiter) => {
                     var randomItem = Array[Math.round(Math.random() * Array.length)]
                     var maps = randomItem - 1
                     console.log('Map Envoyé.')
-
-                    lastMap[message.user.ircUsername] = {
-                        lastMap: randomItem
-                    }
-                    fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
-                        if (err) throw err
-                    })
-                    let userLastMap = lastMap[message.user.ircUsername].lastMap
 
                     osuApi.getBeatmaps({ b: `${randomItem}` }).then(beatmaps => {
                         message.user.sendMessage(`[https://osu.ppy.sh/b/${randomItem} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.genre(maps)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)

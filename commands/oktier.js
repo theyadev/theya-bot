@@ -7,7 +7,7 @@ var osuApi = new osu.Api(apiKey, {
   completeScores: false
 })
 
-module.exports.run = async (message, cooldownr, lastMap, rateLimiter) => {
+module.exports.run = async (message, cooldownr, /*lastMap*/) => {
   cooldownr.add(message.user.ircUsername)
   fs.readFile(`./maps/mapsGnf.txt`, 'utf8', (err, file) => {
     if (err) throw err
@@ -16,13 +16,13 @@ module.exports.run = async (message, cooldownr, lastMap, rateLimiter) => {
     var maps = randomItem - 1
     console.log(randomItem)
 
-    lastMap[message.user.ircUsername] = {
+    /*lastMap[message.user.ircUsername] = {
       lastMap: randomItem
     }
     fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
       if (err) throw err
     })
-    let userLastMap = lastMap[message.user.ircUsername].lastMap
+    let userLastMap = lastMap[message.user.ircUsername].lastMap*/
 
     osuApi.getBeatmaps({ b: `${randomItem}` }).then(beatmaps => {
       message.user.sendMessage(`[https://osu.ppy.sh/b/${randomItem} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.genre(maps)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
