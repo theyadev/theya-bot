@@ -38,6 +38,11 @@ module.exports.genre = function mapGenre(nombre) {
         1479006: "Tech",
         2133937: "Tech",
         2169383: "Tech",
+        1502447: "Tech",
+        1269405: "Tech",
+        1135842: "Tech",
+        1487796: "Tech",
+        1401833: "Tech",
         //Alternate
         2035760: "Alternate",
         2219808: "Alternate",
@@ -57,7 +62,12 @@ module.exports.genre = function mapGenre(nombre) {
         //Stream
         1911573: "Stream",
         2255704: "Stream",
-        750243 :"Stream",
+        750243: "Stream",
+        2232193: "Stream",
+        2221798: "Stream",
+        2198088: "Stream",
+        2204116: "Stream",
+        2190485: "Stream",
         //Special
         1051428: "Special",
         2271671: "Special",
@@ -68,7 +78,7 @@ module.exports.genre = function mapGenre(nombre) {
         2068795: "LN",
         1432753: "LN",
         2078266: "LN",
-        1361218: "SV",        
+        1361218: "SV",
     }
     return genre[nombre] || 'Classic'
 }
