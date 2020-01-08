@@ -13,7 +13,6 @@ var osuApi = new osu.Api(apiKey, {
   completeScores: false
 })
 var rateLimiter = 0
-
 let cooldowng = new Set()
 let cooldown = new Set()
 let cooldownMappool = new Set()
@@ -35,6 +34,7 @@ fs.readdir("./commands/", (err, files) => {
     let props = require(`./commands/${f}`)
     console.log(`${f} Loaded.`)
     client.commands.set(props.help.name, props)
+    client.commands.set(props.help.alias, props)
   })
 })
 const startOsuBot = async () => {
@@ -87,43 +87,6 @@ const startOsuBot = async () => {
           })
         }
       })
-      function increment(n) {
-        n++
-        return n;
-      }
-      function requests(mode) {
-        fs.readFile(`./maps/maps${mode}.txt`, 'utf8', (err, file) => {
-          if (err) throw err
-          var Array = file.match(/.{1,7}/g)
-          var randomItem = Array[Math.round(Math.random() * Array.length)]
-          var maps = randomItem - 1
-          console.log(randomItem)
-
-          lastMap[message.user.ircUsername] = {
-            lastMap: randomItem
-          }
-          fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
-            if (err) throw err
-          })
-          let userLastMap = lastMap[message.user.ircUsername].lastMap
-
-          osuApi.getBeatmaps({ b: `${randomItem}` }).then(beatmaps => {
-            rateLimiter = increment(rateLimiter)
-
-            message.user.sendMessage(`[https://osu.ppy.sh/b/${randomItem} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.genre(maps)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
-          })
-        })
-        return
-      }
-      function bomb(mode) {
-        setTimeout(function () {
-          let bomb = 0
-          do {
-            bomb += 1
-            requests(mode)
-          } while (bomb < 5)
-        }, 2000)
-      }
       function mappool(mappoolTxt) {
         setTimeout(function () {
           message.user.sendMessage("Maps NM :")
@@ -190,35 +153,7 @@ const startOsuBot = async () => {
         message.user.sendMessage(`Please wait ${cdsecondsr} seconds before making another commands.`)
         return
       }
-      if (commandfile) commandfile.run(message, cooldown, mode, userLastMap,)
-      if (message.message.startsWith(prefix + "r") || message.message.startsWith(prefix + "recommend")) {
-        let mode
-        if (message.message.startsWith(prefix + "r")) mode = message.message.slice(3)
-        if (message.message.startsWith(prefix + "recommend")) mode = message.message.slice(11)
-        if (mode == "mania" || mode == "osu") {
-          cooldownr.add(message.user.ircUsername)
-          setTimeout(function () {
-            requests(mode)
-          }, 1000);
-        }
-        else {
-          cooldownr.add(message.user.ircUsername)
-          setTimeout(function () {
-            requests(defaultMode)
-          }, 1000);
-        }
-      }
-      if (message.message.startsWith(prefix + "bomb")) {
-        let mode = message.message.slice(6)
-        if (mode == "mania" || mode == "osu") {
-          cooldown.add(message.user.ircUsername)
-          bomb(mode)
-        }
-        else {
-          cooldown.add(message.user.ircUsername)
-          bomb(defaultMode)
-        }
-      }
+      if (commandfile) commandfile.run(message, cooldown, mode, userLastMap, cooldownr, lastMap, rateLimiter, defaultMode, request)
       switch (message.message) {
         case prefix + "cc":
           return await user.sendMessage(`Cc ${user.ircUsername}`)
@@ -228,10 +163,6 @@ const startOsuBot = async () => {
             mappool('mapsAeris.txt')
           }, 3000)
           break
-      }
-      if (message.message == prefix + 'oktier') {
-        cooldownr.add(message.user.ircUsername)
-        requests('Gnf')
       }
       if (message.user.ircUsername == "DJays" && message.message == prefix + "w") {
         requests("Djays")
@@ -254,7 +185,7 @@ const startOsuBot = async () => {
           rateLimiter = 0
         }, cdsecondsr * 60000)
       }
-      if (message.message.indexOf("!t") == 0) {
+      if (message.message.indexOf("!request") == 0) {
         message.user.sendMessage('Please /np the map. (You have 30 seconds)')
         request.add(message.user.ircUsername)
       }

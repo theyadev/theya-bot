@@ -14,7 +14,7 @@ module.exports.run = async (message, cooldown) => {
             message.user.sendMessage('!maps = show how many maps there are in the bot.')
         }, 1500)
         setTimeout(function () {
-            message.user.sendMessage('!t = request a beatmap to add in the bot.')
+            message.user.sendMessage('!request = request a beatmap to add in the bot.')
         }, 2000)
         setTimeout(function () {
             message.user.sendMessage("!mode <mania/osu> = set your default game mode.")
