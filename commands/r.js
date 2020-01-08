@@ -16,7 +16,6 @@ module.exports.run = async (message, cooldownr, lastMap, rateLimiter) => {
     }
     let defaultMode = mode[message.user.ircUsername].mode
     mode = message.message.slice(3)
-
     if (mode == "mania" || mode == "osu") {
         cooldownr.add(message.user.ircUsername)
         setTimeout(function () {
