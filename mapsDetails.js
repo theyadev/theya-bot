@@ -15,6 +15,7 @@ module.exports.genre = function mapGenre(nombre) {
     var genre = {
         //Tech
         2208884: "Tech",
+        2012779: "Tech",
         2247022: "Tech",
         1945145: "Tech",
         1929267: "Tech",
