@@ -14,7 +14,5 @@
 - !recommend (!r) <mania/osu> : Recommend a map
 - !bomb <mania/osu> : Recommend 5 maps
 - !request : Request a map to add in the bot
-<<<<<<< HEAD
 - !complain : Complain about the latest map
-=======
 - !complain : Complain about the latest map
