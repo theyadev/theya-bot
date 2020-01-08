@@ -43,9 +43,10 @@ module.exports.genre = function mapGenre(nombre) {
         2219808: "Alternate",
         2015296: "Alternate",
         2034429: "Alternate",
-        1731978: "Alternate",
+        1731977: "Alternate",
         1992818: "Alternate",
         1538158: "Alternate",
+        1992817: "Alternate",
         //Jump
         2260873: "Jump",
         1041370: "Jump",
