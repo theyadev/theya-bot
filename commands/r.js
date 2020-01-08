@@ -20,7 +20,6 @@ module.exports.run = async (message, cooldownr, lastMap, rateLimiter) => {
     if (mode == "mania" || mode == "osu") {
         cooldownr.add(message.user.ircUsername)
         setTimeout(function () {
-           c
         }, 1000);
     }
     else {
