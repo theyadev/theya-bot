@@ -44,6 +44,7 @@ module.exports.genre = function mapGenre(nombre) {
         1135842: "Tech",
         1487796: "Tech",
         1401833: "Tech",
+        2206580: "Tech",
         //Alternate
         2035760: "Alternate",
         2219808: "Alternate",
@@ -69,6 +70,7 @@ module.exports.genre = function mapGenre(nombre) {
         2198088: "Stream",
         2204116: "Stream",
         2190485: "Stream",
+        2026594: "Stream",
         //Special
         1051428: "Special",
         2271671: "Special",
