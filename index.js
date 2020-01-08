@@ -153,8 +153,11 @@ const startOsuBot = async () => {
         message.user.sendMessage(`Please wait ${cdsecondsr} seconds before making another commands.`)
         return
       }
-      if (commandfile) commandfile.run(message, cooldown, mode, userLastMap, cooldownr, lastMap, rateLimiter, defaultMode, request)
-      switch (message.message) {
+      if (commandfile) { 
+        rateLimiter++
+        commandfile.run(message, cooldown, mode, userLastMap, cooldownr, lastMap, rateLimiter, defaultMode, request)
+      }
+        switch (message.message) {
         case prefix + "cc":
           return await user.sendMessage(`Cc ${user.ircUsername}`)
         case prefix + "mappoolaeris":
@@ -183,7 +186,7 @@ const startOsuBot = async () => {
       if (rateLimiter == 1) {
         setTimeout(() => {
           rateLimiter = 0
-        }, cdsecondsr * 60000)
+        }, 60000)
       }
       if (message.message.indexOf("!request") == 0) {
         message.user.sendMessage('Please /np the map. (You have 30 seconds)')

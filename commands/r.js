@@ -24,7 +24,7 @@ module.exports.run = async (message, cooldownr, lastMap, rateLimiter) => {
                 var Array = file.match(/.{1,7}/g)
                 var randomItem = Array[Math.round(Math.random() * Array.length)]
                 var maps = randomItem - 1
-                console.log(randomItem)
+                console.log('Map Envoyé.')
 
                 lastMap[message.user.ircUsername] = {
                     lastMap: randomItem
@@ -49,7 +49,7 @@ module.exports.run = async (message, cooldownr, lastMap, rateLimiter) => {
                 var Array = file.match(/.{1,7}/g)
                 var randomItem = Array[Math.round(Math.random() * Array.length)]
                 var maps = randomItem - 1
-                console.log(randomItem)
+                console.log('Map Envoyé.')
 
                 lastMap[message.user.ircUsername] = {
                     lastMap: randomItem
