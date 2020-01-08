@@ -1,7 +1,9 @@
 const fs = require('fs')
 
-module.exports.run = async (message, cooldown, userLastMap) => {
-    lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
+module.exports.run = async (message, cooldown, /*userLastMap*/) => {
+    cooldown.add(message.user.ircUsername)
+    message.user.sendMessage('Sorry, complain command has some issue, please try again later')
+   /* lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
     if (!lastMap[message.user.ircUsername]) {
         lastMap[message.user.ircUsername] = {
             lastMap: " "
@@ -13,7 +15,7 @@ module.exports.run = async (message, cooldown, userLastMap) => {
         if (err) throw err
         console.log('Beatmap Sauvegardée.')
         message.user.sendMessage('Your complaint has been taken into account.')
-    })
+    })*/
 }
 module.exports.help = {
     name: "complain"
