@@ -12,14 +12,13 @@ var osuApi = new osu.Api(apiKey, {
   notFoundAsError: true,
   completeScores: false
 })
+
 var rateLimiter = 0
+
 let cooldowng = new Set()
 let cooldown = new Set()
-let cooldownMappool = new Set()
-let cooldownr = new Set()
-let cdsecondsr = 5
 let cdseconds = 10
-let cdsecondsMappool = 60
+
 let request = new Set()
 
 fs.readdir("./commands/", (err, files) => {
@@ -87,51 +86,6 @@ const startOsuBot = async () => {
           })
         }
       })
-      function mappool(mappoolTxt) {
-        setTimeout(function () {
-          message.user.sendMessage("Maps NM :")
-          requestsMappool(mappoolTxt, 0)
-          requestsMappool(mappoolTxt, 1)
-          setTimeout(function () {
-            requestsMappool(mappoolTxt, 2)
-            requestsMappool(mappoolTxt, 3)
-          }, 1000)
-        }, 6000)
-        setTimeout(function () {
-          message.user.sendMessage("Maps HD :")
-          requestsMappool(mappoolTxt, 4)
-          requestsMappool(mappoolTxt, 5)
-        }, 12000)
-        setTimeout(function () {
-          message.user.sendMessage("Maps HR :")
-          requestsMappool(mappoolTxt, 6)
-          requestsMappool(mappoolTxt, 7)
-        }, 18000)
-        setTimeout(function () {
-          message.user.sendMessage("Maps FM :")
-          requestsMappool(mappoolTxt, 8)
-          requestsMappool(mappoolTxt, 9)
-        }, 24000)
-        setTimeout(function () {
-          message.user.sendMessage("TieBreaker :")
-          requestsMappool(mappoolTxt, 10)
-        }, 30000)
-      }
-      function requestsMappool(mappoolTxt, nombre) {
-        rateLimiter += 1
-        fs.readFile(`./maps/${mappoolTxt}`, 'utf8', (err, file) => {
-          if (err) throw err
-          var Array = file.match(/.{1,7}/g)
-
-          osuApi.getBeatmaps({ b: Array[nombre] }).then(beatmaps => {
-            var nombre = beatmaps[0].difficulty.rating
-            duration = beatmaps[0].length.total
-
-            message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps[0].id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm} | CS: ${beatmaps[0].difficulty.size} OD: ${beatmaps[0].difficulty.overall} AR: ${beatmaps[0].difficulty.approach} HP: ${beatmaps[0].difficulty.drain}`)
-          })
-        })
-        return
-      }
       if (cooldowng.has(message.user.ircUsername)) return
       if (rateLimiter >= 60) {
         cooldowng.add(message.user.ircUsername)
@@ -143,46 +97,15 @@ const startOsuBot = async () => {
         message.user.sendMessage(`Please wait ${cdseconds} seconds before making another commands.`)
         return
       }
-      if (cooldownMappool.has(message.user.ircUsername)) {
-        cooldowng.add(message.user.ircUsername)
-        message.user.sendMessage(`Please wait ${cdsecondsMappool} seconds before making another commands.`)
-        return
-      }
-      if (cooldownr.has(message.user.ircUsername)) {
-        cooldowng.add(message.user.ircUsername)
-        message.user.sendMessage(`Please wait ${cdsecondsr} seconds before making another commands.`)
-        return
-      }
-      if (commandfile) { 
+      if (commandfile) {
+        cooldown.add(message.user.ircUsername)
         rateLimiter++
         commandfile.run(message, cooldown, mode, /*userLastMap,*/ cooldownr, /*lastMap,*/ rateLimiter, defaultMode, request)
-      }
-        switch (message.message) {
-        case prefix + "cc":
-          return await user.sendMessage(`Cc ${user.ircUsername}`)
-        case prefix + "mappoolaeris":
-          cooldownMappool.add(message.user.ircUsername)
-          setTimeout(function () {
-            mappool('mapsAeris.txt')
-          }, 3000)
-          break
-      }
-      if (message.user.ircUsername == "DJays" && message.message == prefix + "w") {
-        requests("Djays")
-        cooldownr.add(message.user.ircUsername)
       }
       setTimeout(() => {
         cooldown.delete(message.user.ircUsername)
         cooldowng.delete(message.user.ircUsername)
       }, cdseconds * 1000)
-      setTimeout(() => {
-        cooldownMappool.delete(message.user.ircUsername)
-        cooldowng.delete(message.user.ircUsername)
-      }, cdsecondsMappool * 1000)
-      setTimeout(() => {
-        cooldownr.delete(message.user.ircUsername)
-        cooldowng.delete(message.user.ircUsername)
-      }, cdsecondsr * 1000)
       if (rateLimiter == 1) {
         setTimeout(() => {
           rateLimiter = 0
