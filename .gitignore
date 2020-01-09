@@ -111,6 +111,8 @@ secret.js
 
 # Maps/Users
 *.txt
+mapsMania.json
+mapsOsu.json
 lastMap.json
 mode.json
 runtest.bat
