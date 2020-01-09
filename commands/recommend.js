@@ -7,7 +7,7 @@ var osuApi = new osu.Api(apiKey, {
     completeScores: false
 })
 
-module.exports.run = async (message, cooldownr, /*lastMap*/) => {
+module.exports.run = async (message, /*lastMap*/) => {
     let mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
     if (!mode[message.user.ircUsername]) {
         mode[message.user.ircUsername] = {
@@ -17,51 +17,25 @@ module.exports.run = async (message, cooldownr, /*lastMap*/) => {
     let defaultMode = mode[message.user.ircUsername].mode
     mode = message.message.slice(11)
     if (mode == "mania" || mode == "osu") {
-        cooldownr.add(message.user.ircUsername)
-        setTimeout(function () {
-            fs.readFile(`./maps/maps${mode}.txt`, 'utf8', (err, file) => {
-                if (err) throw err
-                var Array = file.match(/.{1,7}/g)
-                var randomItem = Array[Math.round(Math.random() * Array.length)]
-                var maps = randomItem - 1
+        setTimeout(function () {s
+                let maps = JSON.parse(fs.readFileSync(`./maps/maps${mode}.json`, "utf8"))
+                var randomMap = maps[Math.round(Math.random() * maps.length)]
                 console.log(randomItem)
 
-                /*lastMap[message.user.ircUsername] = {
-                    lastMap: randomItem
-                }
-                fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
-                    if (err) throw err
+                osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
+                    message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps.id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.Genre} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
                 })
-                let userLastMap = lastMap[message.user.ircUsername].lastMap*/
-
-                osuApi.getBeatmaps({ b: `${randomItem}` }).then(beatmaps => {
-                    message.user.sendMessage(`[https://osu.ppy.sh/b/${randomItem} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.genre(maps)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
-                })
-            })
         }, 1000);
     }
     else {
-        cooldownr.add(message.user.ircUsername)
         setTimeout(function () {
-            fs.readFile(`./maps/maps${defaultMode}.txt`, 'utf8', (err, file) => {
-                if (err) throw err
-                var Array = file.match(/.{1,7}/g)
-                var randomItem = Array[Math.round(Math.random() * Array.length)]
-                var maps = randomItem - 1
+                let maps = JSON.parse(fs.readFileSync(`./maps/maps${defaultMode}.json`, "utf8"))
+                var randomMap = maps[Math.round(Math.random() * maps.length)]
                 console.log(randomItem)
 
-                /*lastMap[message.user.ircUsername] = {
-                    lastMap: randomItem
-                }
-                fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
-                    if (err) throw err
+                osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
+                    message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps.id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.Genre} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
                 })
-                let userLastMap = lastMap[message.user.ircUsername].lastMap*/
-
-                osuApi.getBeatmaps({ b: `${randomItem}` }).then(beatmaps => {
-                    message.user.sendMessage(`[https://osu.ppy.sh/b/${randomItem} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${map.genre(maps)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
-                })
-            })
         }, 1000);
     }
 
