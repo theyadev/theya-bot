@@ -3,7 +3,7 @@
 - You can use it easily ingame by sending a pm to "- Theya -".
 - I'm still a beginner in Javascript, if there are bugs or if my code is bad, please don't blame me.
 
-# Usefull Links
+# Useful Links
 - Discord : https://discord.gg/bUsRruH
 - Theya's Profile : https://osu.ppy.sh/users/10763029
 
@@ -14,5 +14,4 @@
 - !recommend (!r) <mania/osu> : Recommend a map
 - !bomb <mania/osu> : Recommend 5 maps
 - !request : Request a map to add in the bot
-- !complain : Complain about the latest map
 - !complain : Complain about the latest map
