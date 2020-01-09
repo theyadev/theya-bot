@@ -1,5 +1,4 @@
-module.exports.run = async (message, cooldown) => {
-    cooldown.add(message.user.ircUsername)
+module.exports.run = async (message) => {
     setTimeout(function () {
         setTimeout(function () {
             message.user.sendMessage("The goal of this bot is to send good unranked maps, if farming is borring for you, this bot is made for you !")

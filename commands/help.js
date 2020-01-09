@@ -1,5 +1,4 @@
-module.exports.run = async (message, cooldown) => {
-    cooldown.add(message.user.ircUsername)
+module.exports.run = async (message) => {
     setTimeout(function () {
         setTimeout(function () {
             message.user.sendMessage("Full Commands List : https://github.com/theyadev/theya-bot")

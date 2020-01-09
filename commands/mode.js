@@ -1,7 +1,6 @@
 const fs = require('fs')
 
-module.exports.run = async (message, cooldown, mode) => {
-    cooldown.add(message.user.ircUsername)
+module.exports.run = async (message, mode) => {
     const CTV = message.message.slice(6)
     if (CTV == "osu" || CTV == "mania") {
         mode[message.user.ircUsername] = {

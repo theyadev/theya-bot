@@ -1,7 +1,6 @@
 const fs = require('fs')
 
-module.exports.run = async (message, cooldown) => {
-    cooldown.add(message.user.ircUsername)
+module.exports.run = async (message) => {
     fs.readFile('./maps/mapsOsu.txt', 'utf8', (err, fileOsu) => {
         fs.readFile('./maps/mapsMania.txt', 'utf8', (err, fileMania) => {
             if (err) throw err
