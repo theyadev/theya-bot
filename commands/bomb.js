@@ -1,7 +1,7 @@
 const fs = require('fs')
 const osu = require('node-osu')
-const { apiKey } = require('C:/Users/Theya/Desktop/theya-bot/secret.js')
-const map = require('C:/Users/Theya/Desktop/theya-bot/mapsDetails.js')
+const { apiKey } = require('../secret.js')
+const map = require('../mapsDetails.js')
 var osuApi = new osu.Api(apiKey, {
     notFoundAsError: true,
     completeScores: false
@@ -15,36 +15,51 @@ module.exports.run = async (message) => {
         }
     }
     let defaultMode = mode[message.user.ircUsername].mode
+    function recommend(modeSet) {
+        let maps = JSON.parse(fs.readFileSync(`./maps/maps${modeSet}.json`, "utf8"))
+        var randomMap = maps[Math.round(Math.random() * maps.length)]
+        if (randomMap == undefined) randomMap = maps[Math.round(Math.random() * maps.length)]
+        console.log(randomMap)
+
+        osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
+            message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps[0].id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.Genre} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
+        })
+        return
+    }
     mode = message.message.slice(6)
 
     if (mode == "mania" || mode == "osu") {
         setTimeout(function () {
-            let bomb = 0
-            do {
-                bomb += 1
-                    let maps = JSON.parse(fs.readFileSync(`./maps/maps${mode}.json`, "utf8"))
-                    var randomMap = maps[Math.round(Math.random() * maps.length)]
-                    console.log(randomItem)
-
-                    osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
-                        message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps.id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.Genre} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
-                    })
-            } while (bomb < 5)
+            recommend(mode)
+            setTimeout(function () {
+                recommend(mode)
+                setTimeout(function () {
+                    recommend(mode)
+                    setTimeout(function () {
+                        recommend(mode)
+                        setTimeout(function () {
+                            recommend(mode)
+                        }, 1500)
+                    }, 1500)
+                }, 1500)
+            }, 1500)
         }, 5000)
     }
     else {
         setTimeout(function () {
-            let bomb = 0
-            do {
-                bomb += 1
-                    let maps = JSON.parse(fs.readFileSync(`./maps/maps${defaultMode}.json`, "utf8"))
-                    var randomMap = maps[Math.round(Math.random() * maps.length)]
-                    console.log(randomItem)
-
-                    osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
-                        message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps.id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.Genre} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
-                    })               
-            } while (bomb < 5)
+            recommend(defaultMode)
+            setTimeout(function () {
+                recommend(defaultMode)
+                setTimeout(function () {
+                    recommend(defaultMode)
+                    setTimeout(function () {
+                        recommend(defaultMode)
+                        setTimeout(function () {
+                            recommend(defaultMode)
+                        }, 1500)
+                    }, 1500)
+                }, 1500)
+            }, 1500)
         }, 5000)
     }
 }
