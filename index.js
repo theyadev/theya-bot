@@ -17,7 +17,7 @@ var rateLimiter = 0
 
 let cooldowng = new Set()
 let cooldown = new Set()
-let cdseconds = 10
+let cdseconds = 13
 
 let request = new Set()
 
@@ -40,15 +40,13 @@ const startOsuBot = async () => {
   try {
     await client.connect()
     console.log("Theya!Bot is Online...")
-    fs.readFile('./maps/mapsOsu.txt', 'utf8', (err, fileOsu) => {
-      fs.readFile('./maps/mapsMania.txt', 'utf8', (err, fileMania) => {
-        if (err) throw err
-        var ArrayOsu = fileOsu.match(/.{1,7}/g)
-        var ArrayMania = fileMania.match(/.{1,7}/g)
-        console.log(`${ArrayOsu.length} osu! maps in the bot.`)
-        console.log(`${ArrayMania.length} osu!mania maps in the bot.`)
-      })
-    })
+    let mapsOsu = JSON.parse(fs.readFileSync(`./maps/mapsOsu.json`, "utf8"))        
+    let mapsMania = JSON.parse(fs.readFileSync(`./maps/mapsMania.json`, "utf8"))                  
+    
+        console.log(`${mapsOsu.length} osu! maps in the bot.`)
+        console.log(`${mapsMania.length} osu!mania maps in the bot.`)
+      
+    
     fs.readFile('./users.txt', 'utf8', (err, usersList) => {
       if (err) throw err
       var lignes = usersList.split(/\r\n|\r|\n/)
@@ -78,9 +76,9 @@ const startOsuBot = async () => {
         if (err) throw err
         var lignes = usersList.split(/\r\n|\r|\n/)
         if (lignes.indexOf(message.user.ircUsername) == -1 && message.message.indexOf('!') == 0) {
-          message.user.sendMessage('Hey ! I see its the first time you use the bot :o')
+         /* message.user.sendMessage('Hey ! I see its the first time you use the bot :o')
           message.user.sendMessage('Go check !help & !info for a good start !')
-          fs.appendFile('./users.txt', `${message.user.ircUsername}\n`, (err) => {
+          */fs.appendFile('./users.txt', `${message.user.ircUsername}\n`, (err) => {
             if (err) throw err
             console.log('Joueur Sauvegardé.')
           })
@@ -100,7 +98,7 @@ const startOsuBot = async () => {
       if (commandfile) {
         cooldown.add(message.user.ircUsername)
         rateLimiter++
-        commandfile.run(message, cooldown, mode, /*userLastMap,*/ cooldownr, /*lastMap,*/ rateLimiter, defaultMode, request)
+        commandfile.run(message, cooldown, mode, /*userLastMap, lastMap,*/ rateLimiter, defaultMode, request)
       }
       setTimeout(() => {
         cooldown.delete(message.user.ircUsername)
