@@ -15,6 +15,7 @@ var osuApi = new osu.Api(apiKey, {
 
 var rateLimiter = 0
 
+let mode = 0
 let cooldowng = new Set()
 let cooldown = new Set()
 let cdseconds = 13
@@ -57,7 +58,8 @@ const startOsuBot = async () => {
       let messageArray = message.message.split(" ")
       let cmd = messageArray[0]
       let commandfile = client.commands.get(cmd.slice(prefix.length))
-      let mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
+
+      mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
       if (!mode[message.user.ircUsername]) {
         mode[message.user.ircUsername] = {
           mode: "osu"
@@ -65,13 +67,14 @@ const startOsuBot = async () => {
       }
       let defaultMode = mode[message.user.ircUsername].mode
 
-      /*let lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
+      let lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
       if (!lastMap[message.user.ircUsername]) {
         lastMap[message.user.ircUsername] = {
-          lastMap: " "
+            lastmap: " "
         }
-      }
-      let userLastMap = lastMap[message.user.ircUsername].lastMap*/
+    }
+    let userLastmap = lastMap[message.user.ircUsername].lastmap
+
       fs.readFile('./users.txt', 'utf8', (err, usersList) => {
         if (err) throw err
         var lignes = usersList.split(/\r\n|\r|\n/)
@@ -98,7 +101,7 @@ const startOsuBot = async () => {
       if (commandfile) {
         cooldown.add(message.user.ircUsername)
         rateLimiter++
-        commandfile.run(message, cooldown, mode, /*userLastMap, lastMap,*/ rateLimiter, defaultMode, request)
+        commandfile.run(message, cooldown, mode, lastMap, mode)
       }
       setTimeout(() => {
         cooldown.delete(message.user.ircUsername)

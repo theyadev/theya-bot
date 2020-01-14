@@ -7,19 +7,18 @@ var osuApi = new osu.Api(apiKey, {
     completeScores: false
 })
 
-module.exports.run = async (message, /*lastMap*/) => {
-    let mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
-    if (!mode[message.user.ircUsername]) {
-        mode[message.user.ircUsername] = {
-            mode: "osu"
-        }
-    }
-    let defaultMode = mode[message.user.ircUsername].mode
-    mode = message.message.slice(11)
-    if (mode == "mania" || mode == "osu") {
+module.exports.run = async (message, lastMap, mode) => {
+    let modes = message.message.slice(11)
+    if (modes == "mania" || modes == "osu") {
         setTimeout(function () {
-                let maps = JSON.parse(fs.readFileSync(`./maps/maps${mode}.json`, "utf8"))
+                let maps = JSON.parse(fs.readFileSync(`./maps/maps${modes}.json`, "utf8"))
                 var randomMap = maps[Math.round(Math.random() * maps.length)]
+                lastMap[message.user.ircUsername] = {
+                    lastmap: randomMap.ID
+                }
+                fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
+                    if (err) throw err
+                })
                 console.log(randomMap)
 
                 osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
@@ -29,8 +28,15 @@ module.exports.run = async (message, /*lastMap*/) => {
     }
     else {
         setTimeout(function () {
+            let defaultMode = mode[message.user.ircUsername].mode
                 let maps = JSON.parse(fs.readFileSync(`./maps/maps${defaultMode}.json`, "utf8"))
                 var randomMap = maps[Math.round(Math.random() * maps.length)]
+                lastMap[message.user.ircUsername] = {
+                    lastmap: randomMap.ID
+                }
+                fs.writeFile("./lastMap.json", JSON.stringify(lastMap), (err) => {
+                    if (err) throw err
+                })
                 console.log(randomMap)
 
                 osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
