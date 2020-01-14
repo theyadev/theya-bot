@@ -1,6 +1,6 @@
 const fs = require('fs')
-
-module.exports.run = async (message, mode) => {
+let mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
+module.exports.run = async (message) => {
     const CTV = message.message.slice(6)
     if (CTV == "osu" || CTV == "mania") {
         mode[message.user.ircUsername] = {
