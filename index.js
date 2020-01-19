@@ -41,13 +41,13 @@ const startOsuBot = async () => {
   try {
     await client.connect()
     console.log("Theya!Bot is Online...")
-    let mapsOsu = JSON.parse(fs.readFileSync(`./maps/mapsOsu.json`, "utf8"))        
-    let mapsMania = JSON.parse(fs.readFileSync(`./maps/mapsMania.json`, "utf8"))                  
-    
-        console.log(`${mapsOsu.length} osu! maps in the bot.`)
-        console.log(`${mapsMania.length} osu!mania maps in the bot.`)
-      
-    
+    let mapsOsu = JSON.parse(fs.readFileSync(`./maps/mapsOsu.json`, "utf8"))
+    let mapsMania = JSON.parse(fs.readFileSync(`./maps/mapsMania.json`, "utf8"))
+
+    console.log(`${mapsOsu.length} osu! maps in the bot.`)
+    console.log(`${mapsMania.length} osu!mania maps in the bot.`)
+
+
     fs.readFile('./users.txt', 'utf8', (err, usersList) => {
       if (err) throw err
       var lignes = usersList.split(/\r\n|\r|\n/)
@@ -70,24 +70,23 @@ const startOsuBot = async () => {
       let lastMap = JSON.parse(fs.readFileSync("./lastMap.json", "utf8"))
       if (!lastMap[message.user.ircUsername]) {
         lastMap[message.user.ircUsername] = {
-            lastmap: " "
+          lastmap: " "
         }
-    }
-    let userLastmap = lastMap[message.user.ircUsername].lastmap
+      }
+      let userLastmap = lastMap[message.user.ircUsername].lastmap
 
       fs.readFile('./users.txt', 'utf8', (err, usersList) => {
         if (err) throw err
         var lignes = usersList.split(/\r\n|\r|\n/)
         if (lignes.indexOf(message.user.ircUsername) == -1 && message.message.indexOf('!') == 0) {
-         /* message.user.sendMessage('Hey ! I see its the first time you use the bot :o')
-          message.user.sendMessage('Go check !help & !info for a good start !')
-          */fs.appendFile('./users.txt', `${message.user.ircUsername}\n`, (err) => {
+          fs.appendFile('./users.txt', `${message.user.ircUsername}\n`, (err) => {
             if (err) throw err
             console.log('Joueur Sauvegardé.')
           })
         }
       })
       if (cooldowng.has(message.user.ircUsername)) return
+      if (message.message[0] == prefix) {
       if (rateLimiter >= 60) {
         cooldowng.add(message.user.ircUsername)
         message.user.sendMessage('The bot has too many request, please retry in a few seconds.')
@@ -103,6 +102,7 @@ const startOsuBot = async () => {
         rateLimiter++
         commandfile.run(message, cooldown, mode, lastMap, mode)
       }
+    }
       setTimeout(() => {
         cooldown.delete(message.user.ircUsername)
         cooldowng.delete(message.user.ircUsername)

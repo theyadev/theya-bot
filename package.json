@@ -16,6 +16,7 @@
     "bancho.js": "^0.9.6",
     "chai": "^4.2.0",
     "fs": "0.0.1-security",
+    "json-query": "^2.2.2",
     "mocha": "^7.0.0",
     "mysql": "^2.17.1",
     "node-osu": "^2.0.0"
