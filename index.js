@@ -21,7 +21,11 @@ let cooldown = new Set()
 let cdseconds = 13
 
 let request = new Set()
-
+setInterval(function(){ 
+  fs.writeFile("./lastMap.json", '{}', (err) => {
+    if (err) throw err
+})
+ }, 1800000);
 fs.readdir("./commands/", (err, files) => {
   if (err) console.log(err)
 
@@ -56,7 +60,7 @@ const startOsuBot = async () => {
     client.on("PM", async (message) => {
       if (message.user.ircUsername === USERNAME) return
       let messageArray = message.message.split(" ")
-      let cmd = messageArray[0]
+      let cmd = messageArray[0].toLowerCase()
       let commandfile = client.commands.get(cmd.slice(prefix.length))
 
       mode = JSON.parse(fs.readFileSync("./mode.json", "utf8"))
