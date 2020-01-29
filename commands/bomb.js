@@ -21,8 +21,8 @@ module.exports.run = async (message) => {
         if (randomMap == undefined) randomMap = maps[Math.round(Math.random() * maps.length)]
         console.log(randomMap)
 
-        osuApi.getBeatmaps({ b: `${randomMap.ID}` }).then(beatmaps => {
-            message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps[0].id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.Genre[0].toUpperCase() + randomMap.Genre.slice(1)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
+        osuApi.getBeatmaps({ b: `${randomMap.id}` }).then(beatmaps => {
+            message.user.sendMessage(`[https://osu.ppy.sh/b/${beatmaps[0].id} ${beatmaps[0].artist} - ${beatmaps[0].title} [${beatmaps[0].version}]] | ${randomMap.genre[0].toUpperCase() + randomMap.genre.slice(1)} | ${map.rating(beatmaps[0].difficulty.rating)} ★ | ${map.duree(beatmaps[0].length.total)} ♪ | BPM: ${beatmaps[0].bpm}`)
         })
         return
     }
