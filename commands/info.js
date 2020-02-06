@@ -1,7 +1,7 @@
 module.exports.run = async (message) => {
     setTimeout(function () {
         setTimeout(function () {
-            message.user.sendMessage("If farming is borring for you, or you just want to chill on good unranked maps, this bot is made for you !")
+            message.user.sendMessage("If farming is boring for you, or you just want to chill on good unranked maps, this bot is made for you !")
         }, 0)
         setTimeout(function () {
             message.user.sendMessage('You can join the Discord: https://discord.gg/bUsRruH for requesting features, maps, or just chat.')
