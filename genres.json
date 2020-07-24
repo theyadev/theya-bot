@@ -1,0 +1,8 @@
+{
+    "osu": [
+        "alternate", "tech", "classic", "jump", "reading", "stream"
+    ],
+    "mania": [
+        "classic", "streams", "jacks", "ln", "sv", "tech"
+    ]
+}
