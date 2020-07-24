@@ -46,7 +46,7 @@ client.connect().then(() => {
         if (cooldowng.has(message.user.ircUsername)) return
         if (cooldown.has(message.user.ircUsername)) {
             cooldowng.add(message.user.ircUsername)
-            message.user.sendMessage(`Please wait ${cdseconds} seconds before making another commands.`)
+            message.user.sendMessage(`Please wait ${cdseconds} seconds before sending another command.`)
             return
         }
 
