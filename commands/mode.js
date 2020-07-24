@@ -1,7 +1,7 @@
 const getDefaultMode = require('../functions/get.js').defaultMode
 
 var mysql = require('mysql');
-const db_config = require('../config.json')
+const { db_config } = require('../config.json')
 var connection;
 
 function handleDisconnect() {
